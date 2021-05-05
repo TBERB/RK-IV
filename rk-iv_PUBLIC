@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+# RK-IV bot
+import discord
+
+token = 'REDACTED'
+
+client = discord.Client()
+@client.event
+async def on_ready():
+    print('{0} has connected to Discord!'.format(client.user))
+    channelgeneral = client.get_channel(834856485648597062)
+    await channelgeneral.send('RK-IV ALIVE!')
+    global vc
+    channelvc = client.get_channel(835873578011459614)
+    vc = await channelvc.connect()
+
+@client.event
+async def on_message(message):
+    try:
+        if '$soundcheck' in message.content.lower():
+            vc.play((discord.FFmpegPCMAudio('clints.wav')))
+        elif '$pause' in message.content.lower():
+            vc.pause()
+        elif '$resume' in message.content.lower():
+            vc.resume()
+        elif '$stop' in message.content.lower():
+            vc.stop()
+        elif '$s' in message.content.lower():
+            season = message.content.lower()[2]
+            episode = message.content.lower()[4:6]
+            vc.play((discord.FFmpegPCMAudio(f'zyxx_eps/MTZ_S{season}E{episode}')))
+    except:
+        print('Uh oh')
+client.run(token)
+
+# https://discordapp.com/oauth2/authorize?&client_id=834617138856722442&scope=bot&permissions=8c
+
+'''
+631209898461626426
+
+
+'''
